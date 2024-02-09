@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Test</title>
+    <title>Unity WebGL Player | Pixel</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
@@ -20,7 +20,7 @@
       <div id="unity-footer">
         <div id="unity-webgl-logo"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Test</div>
+        <div id="unity-build-title">Pixel</div>
       </div>
     </div>
     <script>
@@ -56,15 +56,15 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/qweeq.loader.js";
+      var loaderUrl = buildUrl + "/pixel_web.loader.js";
       var config = {
-        dataUrl: buildUrl + "/qweeq.data.unityweb",
-        frameworkUrl: buildUrl + "/qweeq.framework.js.unityweb",
-        codeUrl: buildUrl + "/qweeq.wasm.unityweb",
+        dataUrl: buildUrl + "/pixel_web.data.gz",
+        frameworkUrl: buildUrl + "/pixel_web.framework.js.gz",
+        codeUrl: buildUrl + "/pixel_web.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
-        productName: "Test",
-        productVersion: "1.0",
+        productName: "Pixel",
+        productVersion: "0.1",
         showBanner: unityShowBanner,
       };
 
