@@ -4,53 +4,75 @@
     <title>Платформа МИК (Управление)</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        #buttons-container {
-          max-width: 1300px; /* Установите максимальную ширину контейнера */
-        }
-        button {
-          display: inline-block;
-          margin: 5px;
-          padding: 10px 20px;
-          width: 400px; /* Фиксированная ширина кнопки */
-          font-size: 16px;
-          font-weight: bold;
-          color: #ffffff;
-          background-color: #007bff;
-          border: none;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-        button:hover {
-          background-color: #0056b3;
-        }
-        .button-row {
-          margin-bottom: 10px; /* Добавляем отступ после каждой строки кнопок */
-        }
+		#buttons-container {
+		  max-width: 1300px; /* Установите максимальную ширину контейнера */
+		}
+		button {
+		  display: inline-block;
+		  margin: 5px;
+		  padding: 10px 20px;
+		  width: 400px; /* Фиксированная ширина кнопки */
+		  font-size: 16px;
+		  font-weight: bold;
+		  color: #ffffff;
+		  background-color: #007bff;
+		  border: none;
+		  border-radius: 5px;
+		  cursor: pointer;
+		}
+		button:hover {
+		  background-color: #0056b3;
+		}
+		.button-row {
+		  margin-bottom: 10px; /* Добавляем отступ после каждой строки кнопок */
+		}
     </style>
 </head>
 
 <body>
 <div id="buttons-container"></div>
 
-<script>
-    // Функция для обновления содержимого страницы через AJAX
-    function updateContent() {
-        const xhr = new XMLHttpRequest(); // Создаем объект XMLHttpRequest
-        xhr.onreadystatechange = function() { // Устанавливаем обработчик события изменения состояния
-            if (xhr.readyState === XMLHttpRequest.DONE) { // Проверяем, что запрос завершен
-                if (xhr.status === 200) { // Проверяем успешность запроса
-                    document.getElementById("buttons-container").innerHTML = xhr.responseText; // Обновляем содержимое страницы
-                } else {
-                    console.error('Error loading content:', xhr.status); // Выводим ошибку в консоль, если запрос не удался
-                }
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+    import { getDatabase, ref,get, update } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+	const firebaseConfig = {
+			apiKey: "AIzaSyCU5n0pPkkWIfqp0K6wxEkvlrO5tBHUwDU",
+			authDomain: "motionmik-c14a2.firebaseapp.com",
+			databaseURL: "https://motionmik-c14a2-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "motionmik-c14a2",
+			storageBucket: "motionmik-c14a2.appspot.com",
+			messagingSenderId: "898285271023",
+			appId: "1:898285271023:web:78931be275619a9993e81a"
+	};
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    function updateButtons() {
+        const buttonsContainer = document.getElementById('buttons-container');
+        const controllRef = ref(database, 'controll');
+        get(controllRef).then((snapshot) => {
+            const data = snapshot.val();
+            buttonsContainer.innerHTML = '';
+            for (const key in data) {
+                const button = document.createElement('button');
+                button.textContent = key;
+                button.addEventListener('click', () => {
+                    console.log(`Button "${key}" was clicked`);
+				   update(ref(database, `controll/${key}`), true)
+						.then(() => console.log(`Value of "${key}" updated to true`))
+						.catch(error => console.error('Error updating value:', error));
+                });
+                buttonsContainer.appendChild(button);
             }
-        };
-        xhr.open('GET', 'content.html', true); // Открываем соединение для получения файла content.html
-        xhr.send(); // Отправляем запрос
+        });
     }
 
-    // Вызываем функцию обновления содержимого страницы каждые 5 секунд
-    setInterval(updateContent, 5000);
+    document.addEventListener("DOMContentLoaded", function() {
+        updateButtons();
+        setInterval(updateButtons, 3000);
+    });
 </script>
 </body>
 </html>
