@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Платформа МИК (Управление)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+		#buttons-container {
+		  max-width: 1300px; /* Установите максимальную ширину контейнера */
+		}
+		button {
+		  display: inline-block;
+		  margin: 5px;
+		  padding: 10px 20px;
+		  width: 400px; /* Фиксированная ширина кнопки */
+		  font-size: 16px;
+		  font-weight: bold;
+		  color: #ffffff;
+		  background-color: #007bff;
+		  border: none;
+		  border-radius: 5px;
+		  cursor: pointer;
+		}
+		button:hover {
+		  background-color: #0056b3;
+		}
+		.button-row {
+		  margin-bottom: 10px; /* Добавляем отступ после каждой строки кнопок */
+		}
+    </style>
+</head>
+
+<body>
+<div id="buttons-container"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+
+	const firebaseConfig = {
+			apiKey: "AIzaSyCU5n0pPkkWIfqp0K6wxEkvlrO5tBHUwDU",
+			authDomain: "motionmik-c14a2.firebaseapp.com",
+			databaseURL: "https://motionmik-c14a2-default-rtdb.europe-west1.firebasedatabase.app",
+			projectId: "motionmik-c14a2",
+			storageBucket: "motionmik-c14a2.appspot.com",
+			messagingSenderId: "898285271023",
+			appId: "1:898285271023:web:78931be275619a9993e81a"
+	};
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const buttonsContainer = document.getElementById('buttons-container');
+        const controllRef = ref(database, 'controll');
+        get(controllRef).then((snapshot) => {
+            const data = snapshot.val();
+            for (const key in data) {
+                const button = document.createElement('button');
+                button.textContent = key;
+                button.addEventListener('click', () => {
+                    // Добавьте здесь код, который должен выполняться при нажатии кнопки
+                    console.log(`Button "${key}" was clicked`);
+                });
+                buttonsContainer.appendChild(button);
+            }
+        });
+    });
+</script>
+</body>
+</html>
