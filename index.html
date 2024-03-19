@@ -47,11 +47,11 @@
 	};
 
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+    const db = getDatabase(app);
 
     function updateButtons() {
         const buttonsContainer = document.getElementById('buttons-container');
-        const controllRef = ref(database, 'controll');
+        const controllRef = ref(db, 'controll');
         get(controllRef).then((snapshot) => {
             const data = snapshot.val();
             buttonsContainer.innerHTML = '';
@@ -60,9 +60,10 @@
                 button.textContent = key;
                 button.addEventListener('click', () => {
                     console.log(`Button "${key}" was clicked`);
-				   update(ref(database, `controll/${key}`), true)
-						.then(() => console.log(`Value of "${key}" updated to true`))
-						.catch(error => console.error('Error updating value:', error));
+					
+					const updates = {};
+					updates['controll/' + key] =  true;
+					return update(ref(db), updates);
                 });
                 buttonsContainer.appendChild(button);
             }
