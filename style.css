@@ -8,19 +8,19 @@ body, html {
 }
 
 .title {
-    color: white; /* Белый цвет текста */
-    font-size: 2.0em; /* Размер шрифта 16 пикселей */
-    text-align: center; /* Выравнивание текста по центру */
-    margin-top: 20px; /* Отступ сверху */
-    position: absolute; /* Добавляем абсолютное позиционирование */
-    top: 20px; /* Устанавливаем отступ сверху от верхнего края страницы */
-    left: 50%; /* Располагаем заголовок по центру горизонтали */
-    transform: translateX(-50%); /* Центрируем заголовок относительно родительского блока */
-    font-weight: 600; /* Устанавливаем полужирное начертание */
+    color: white; 
+    font-size: 2.0em; 
+    text-align: center;
+    margin-top: 20px;
+    position: absolute; 
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 600; 
 }
 
 .top-section {
-	height: 20%; /* Верхняя часть занимает 20% высоты страницы */
+	height: 20%;
 	width:100%;
 }
 
@@ -28,27 +28,22 @@ button:hover {
     background-color: #CACDD5;
 }
 
-
-
 button {
-    display: block;
-	font-size: 1.5em;
+    font-size: 1.5em;
     font-weight: bold;
-    color: #000000;
-    background-color: #ffffff;
-    border: none;
+    border: 2px solid white;
     cursor: pointer;
-	width: 100%;
-	height: 100%;
-    border-radius: 6px; /* Закругление углов кнопки */
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
 }
 
 .bottom-section {
-    height: 20%; /* Нижняя часть занимает 20% высоты страницы */
+    height: 20%;
 	width:100%;
 }
 .middle-section {
-    height: 60%; /* Средняя часть занимает 60% высоты страницы */
+    height: 60%;
     width: 100%;
 }
 

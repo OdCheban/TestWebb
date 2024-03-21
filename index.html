@@ -5,119 +5,98 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="top-section">
-    <div class="title">Московский инновационный кластер</div>
-</div>
+    <div class="top-section">
+        <div class="title">Московский инновационный кластер</div>
+    </div>
 
-<div class="middle-section">
-	<div id = "buttons-table"></div>
-</div>
+    <div class="middle-section">
+        <div id="buttons-table"></div>
+    </div>
 
-<div class="bottom-section">
-	<div id = "buttons-table2"></div>
-</div>
-	
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
-    import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+    <div class="bottom-section">
+        <div id="buttons-table2"></div>
+    </div>
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCU5n0pPkkWIfqp0K6wxEkvlrO5tBHUwDU",
-        authDomain: "motionmik-c14a2.firebaseapp.com",
-        databaseURL: "https://motionmik-c14a2-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "motionmik-c14a2",
-        storageBucket: "motionmik-c14a2.appspot.com",
-        messagingSenderId: "898285271023",
-        appId: "1:898285271023:web:78931be275619a9993e81a"
-    };
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+        const firebaseConfig = {
+            apiKey: "AIzaSyCU5n0pPkkWIfqp0K6wxEkvlrO5tBHUwDU",
+            authDomain: "motionmik-c14a2.firebaseapp.com",
+            databaseURL: "https://motionmik-c14a2-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "motionmik-c14a2",
+            storageBucket: "motionmik-c14a2.appspot.com",
+            messagingSenderId: "898285271023",
+            appId: "1:898285271023:web:78931be275619a9993e81a"
+        };
 
-    function updateTitle() {
-        const titleElement = document.querySelector('.title');
-        const titleRef = ref(db, 'controll/title');
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-        get(titleRef).then((snapshot) => {
-            const title = snapshot.val();
-            titleElement.textContent = title; // Устанавливаем текст заголовка
-        });
-    }
-	function updateButtons() {
-    const buttonsTable = document.getElementById('buttons-table');
-    const buttonsTable2 = document.getElementById('buttons-table2');
-    const controllRef = ref(db, 'controll/elements');
+        function updateTitle() {
+            const titleElement = document.querySelector('.title');
+            const titleRef = ref(db, 'controll/title');
 
-    get(controllRef).then((snapshot) => {
-        const data = snapshot.val();
-        buttonsTable.innerHTML = '';
-        buttonsTable2.innerHTML = '';
-
-        let buttonCount = 0;
-        let buttonCount2 = 0;
-        let currentRow;
-        let currentRow2;
-
-        for (const key in data) {
-            const buttonText = key.split('|||')[0].trim(); // Получаем текст кнопки и удаляем лишние пробелы
-
-            if (buttonText.startsWith('btn_')) {
-                const cell = document.createElement('div');
-                const button = document.createElement('button');
-                button.addEventListener('click', () => {
-                    console.log(`Button "${buttonText}" was clicked`);
-                    const updates = {};
-                    updates['controll/elements/' + key] = true;
-                    return update(ref(db), updates);
-                });
-				
-				const middleSection = document.querySelector('.bottom-section');
-				const middleSectionHeight = middleSection.offsetHeight;	
-				let height = (middleSectionHeight/2 - 25)+'px';
-				button.style.height = height;
-				
-				const image = document.createElement('img');
-				image.style.width = '100%';
-				image.style.height = '100%';
-				button.style.backgroundColor = 'transparent';
-				let path = `img/${buttonText}.png`;
-				image.src = path; // Путь к изображению
-				button.appendChild(image);
-				
-                cell.appendChild(button);
-                buttonsTable2.appendChild(cell);
-                buttonCount++;
-            } else {
-                const cell2 = document.createElement('div');
-                const button2 = document.createElement('button');
-                button2.textContent = buttonText;
-				
-				const middleSection = document.querySelector('.middle-section');
-				const middleSectionHeight = middleSection.offsetHeight;		
-				let height = (middleSectionHeight/6 - 25)+'px';
-				button2.style.height = height;
-				
-                button2.addEventListener('click', () => {
-                    console.log(`Button "${buttonText}" was clicked`);
-                    const updates = {};
-                    updates['controll/elements/' + key] = true;
-                    return update(ref(db), updates);
-                });
-
-                cell2.appendChild(button2);
-                buttonsTable.appendChild(cell2);
-                buttonCount2++;
-            }
+            get(titleRef).then((snapshot) => {
+                const title = snapshot.val();
+                titleElement.textContent = title; // Устанавливаем текст заголовка
+            });
         }
-    });
-}
+        function updateButtons() {
+            const buttonsTable = document.getElementById('buttons-table');
+            const buttonsTable2 = document.getElementById('buttons-table2');
+            const controllRef = ref(db, 'controll/elements');
+
+            get(controllRef).then((snapshot) => {
+                const data = snapshot.val();
+                buttonsTable.innerHTML = '';
+                buttonsTable2.innerHTML = '';
+
+                for (const key in data)
+                {
+                    const buttonText = key.split('|||')[0].trim();
+                    let btn_bottom = buttonText.startsWith('btn_');
+                    const cell = document.createElement('div');
+                    const button = document.createElement('button');
+                    cell.appendChild(button);
+
+                    let target_table = btn_bottom ? buttonsTable2 : buttonsTable;
+                    target_table.appendChild(cell);
+
+                    const middleSection = document.querySelector(btn_bottom ? '.bottom-section' : '.middle-section');
+                    const middleSectionHeight = middleSection.offsetHeight;
+                    let height = (middleSectionHeight / (btn_bottom  ?  2 : 6) - 25) + 'px';
+                    button.style.height = height;
+
+                    if (btn_bottom)
+                    {
+                        const image = document.createElement('img');
+                        button.style.backgroundColor = 'transparent';
+                        image.src = `img/${buttonText}.png`;
+                        button.appendChild(image);
+                    }
+                    else
+                    {
+                        button.textContent = buttonText;
+                    }
+
+                    button.addEventListener('click', () => {
+                        console.log(`Button "${buttonText}" was clicked`);
+                        const updates = {};
+                        updates['controll/elements/' + key] = true;
+                        return update(ref(db), updates);
+                    });
+                }
+            });
+        }
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-        updateTitle();
-        updateButtons();
-        setInterval(updateButtons, 1000);
-    });
-</script>
+        document.addEventListener("DOMContentLoaded", function () {
+            updateTitle();
+            updateButtons();
+            setInterval(updateButtons, 1000);
+        });
+    </script>
 </body>
 </html>
