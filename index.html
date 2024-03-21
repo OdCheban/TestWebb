@@ -30,50 +30,100 @@
 </head>
 
 <body>
-<div id="buttons-container"></div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
-    import { getDatabase, ref,get, update } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
-
-	const firebaseConfig = {
-			apiKey: "AIzaSyCU5n0pPkkWIfqp0K6wxEkvlrO5tBHUwDU",
-			authDomain: "motionmik-c14a2.firebaseapp.com",
-			databaseURL: "https://motionmik-c14a2-default-rtdb.europe-west1.firebasedatabase.app",
-			projectId: "motionmik-c14a2",
-			storageBucket: "motionmik-c14a2.appspot.com",
-			messagingSenderId: "898285271023",
-			appId: "1:898285271023:web:78931be275619a9993e81a"
-	};
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    function updateButtons() {
-        const buttonsContainer = document.getElementById('buttons-container');
-        const controllRef = ref(db, 'controll');
-        get(controllRef).then((snapshot) => {
-            const data = snapshot.val();
-            buttonsContainer.innerHTML = '';
-            for (const key in data) {
-                const button = document.createElement('button');
-                button.textContent = key;
-                button.addEventListener('click', () => {
-                    console.log(`Button "${key}" was clicked`);
-					
-					const updates = {};
-					updates['controll/' + key] =  true;
-					return update(ref(db), updates);
-                });
-                buttonsContainer.appendChild(button);
-            }
-        });
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        updateButtons();
-        setInterval(updateButtons, 1000);
-    });
-</script>
+<div class="cls-c-3-blguh-aneb-toybzf-dna-ugep-kfw-za-75-xrrxnxt-vtm-t-4-v">
+  <div class="3">
+    Московский инновационный кластер
+  </div>
+  <div class="container-31">
+    <div class="group-2085662428">
+      <span class="4">
+        Масштабные инвестиционные проекты Москвы. Программа «Земля за рубль»
+      </span>
+    </div>
+    <div class="group-2085662435">
+      <span class="6">
+        Офсетные контракты
+      </span>
+    </div>
+  </div>
+  <div class="container-32">
+    <div class="group-2085662429">
+      <span class="16">
+        О Московском инновационном кластере
+      </span>
+    </div>
+    <div class="group-2085662438">
+      <span class="18">
+        Направления работы кластера
+      </span>
+    </div>
+  </div>
+  <div class="container">
+    <div class="group-2085662430">
+      <span class="12">
+        Офсетные контракты
+      </span>
+    </div>
+    <div class="group-2085662437">
+      <span class="14">
+        Масштабные инвестиционные проекты Москвы. Программа «Земля за рубль»
+      </span>
+    </div>
+  </div>
+  <div class="container-30">
+    <div class="group-2085662431">
+      <span class="24">
+        Направления работы кластера
+      </span>
+    </div>
+    <div class="group-2085662440">
+      <span class="26">
+        О Московском инновационном кластере
+      </span>
+    </div>
+  </div>
+  <div class="container-1">
+    <div class="group-2085662432">
+      <span class="8">
+        Масштабные инвестиционные проекты Москвы. Программа «Земля за рубль»
+      </span>
+    </div>
+    <div class="group-2085662436">
+      <span class="10">
+        Масштабные инвестиционные проекты Москвы. Программа «Земля за рубль»
+      </span>
+    </div>
+  </div>
+  <div class="container-2">
+    <div class="group-2085662434">
+      <span class="20">
+        О Московском инновационном кластере
+      </span>
+    </div>
+    <div class="group-2085662439">
+      <span class="22">
+        Направления работы кластера
+      </span>
+    </div>
+  </div>
+  <div class="container-34">
+    <div class="group-2085662456">
+      <div class="group-2085662418">
+        <img class="vector-stroke" />
+      </div>
+    </div>
+    <div class="group-2085662455">
+      <img class="vector" />
+    </div>
+  </div>
+  <div class="container-33">
+    <div class="group-2085662397">
+      <img class="group-2085660952" />
+    </div>
+    <div class="group-2085662398">
+      <img class="vector-5" />
+    </div>
+  </div>
+</div>
 </body>
 </html>
