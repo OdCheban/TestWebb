@@ -11,6 +11,7 @@
 
     <div class="middle-section">
         <div id="buttons-table"></div>
+        <div id="loading" style="display: none;">Загрузка..</div>
     </div>
 
     <div class="bottom-section">
@@ -19,7 +20,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
-        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
+        import { getDatabase, ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCU5n0pPkkWIfqp0K6wxEkvlrO5tBHUwDU",
@@ -34,11 +35,26 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        function showLoading(show) {
+		    console.log(`Button "${show}" was clicked`);
+            const loadingDiv = document.getElementById('loading');
+            const buttonsTable = document.getElementById('buttons-table');
+            const buttonsTable2 = document.getElementById('buttons-table2');
+
+            if (show) {
+                buttonsTable.innerHTML = '';
+                buttonsTable2.innerHTML = '';
+                loadingDiv.style.display = 'block';
+            } else {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
         function updateTitle() {
             const titleElement = document.querySelector('.title');
             const titleRef = ref(db, 'controll/title');
 
-            get(titleRef).then((snapshot) => {
+            onValue(titleRef, (snapshot) => {
                 const title = snapshot.val();
                 titleElement.textContent = title; // Устанавливаем текст заголовка
             });
@@ -48,11 +64,24 @@
             const buttonsTable2 = document.getElementById('buttons-table2');
             const controllRef = ref(db, 'controll/elements');
 
-            get(controllRef).then((snapshot) => {
+            onValue(controllRef, (snapshot) => {
+			            showLoading(false);
                 const data = snapshot.val();
                 buttonsTable.innerHTML = '';
                 buttonsTable2.innerHTML = '';
 
+                let changesDetected = false;
+                for (const key in data) {
+                    if (data[key]) {
+                        changesDetected = true;
+                        break;
+                    }
+                }
+                if (changesDetected)
+                {
+                    showLoading(true);
+                    return;
+                }
                 for (const key in data)
                 {
                     const buttonText = key.split('|||')[0].trim();
@@ -85,6 +114,8 @@
                         console.log(`Button "${buttonText}" was clicked`);
                         const updates = {};
                         updates['controll/elements/' + key] = true;
+
+                        showLoading(true);
                         return update(ref(db), updates);
                     });
                 }
@@ -95,8 +126,6 @@
         document.addEventListener("DOMContentLoaded", function () {
             updateTitle();
             updateButtons();
-            setInterval(updateButtons, 1000);
-            setInterval(updateTitle, 1000);
         });
     </script>
 </body>

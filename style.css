@@ -73,3 +73,11 @@ button {
     padding: 10px;
     box-sizing: border-box;
 }
+
+#loading {
+    color: gray;
+    font-size: 2.5em; /* Размер шрифта по вашему усмотрению */
+    font-weight: bold;
+    text-align: justify;
+    height: 100%;
+}
